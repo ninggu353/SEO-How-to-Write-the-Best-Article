@@ -1,0 +1,55 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*storybook.log
+storybook-static
+
+# Runtime secrets and local credentials
+.env
+.env.*
+!.env.example
+client_secret*.json
+*oauth*.json
+*token*.json
+*credentials*.json
+*.pem
+*.key
+
+# Runtime/customer files - keep repo as UI code + sanitized examples only
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.csv
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+outputs/
+data/
+clients/
+tasks/
+uploads/
