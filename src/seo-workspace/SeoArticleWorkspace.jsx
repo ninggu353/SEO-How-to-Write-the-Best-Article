@@ -1,6 +1,7 @@
 import React from 'react';
-import { CheckCircle2, Clock3, FileText, Layers3 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock3, FileText, Layers3, Moon, Settings, Sun, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -600,6 +601,12 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
   const [revisionType, setRevisionType] = React.useState('operator');
   const [apiSettings, setApiSettings] = React.useState(DEFAULT_API_SETTINGS);
   const [apiStatus, setApiStatus] = React.useState({ kind: 'idle', text: '未连接后端' });
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+  const [activeView, setActiveView] = React.useState('home');
+  const [isDarkMode, setIsDarkMode] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('seoWorkspace.theme') === 'dark';
+  });
 
   const selectedProject = workspace.projects.find((project) => project.id === selectedProjectId);
   const selectedStep = visibleSteps.find((step) => step.key === selectedStepKey) || visibleSteps[0];
@@ -645,6 +652,14 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
     };
   }, []);
 
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.documentElement.classList.toggle('dark', isDarkMode);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('seoWorkspace.theme', isDarkMode ? 'dark' : 'light');
+    }
+  }, [isDarkMode]);
+
   function selectProject(projectId) {
     const nextArticle = cloneArticle(firstArticleForProject(workspace, projectId));
     const nextStepKey = visibleSteps.some((step) => step.key === nextArticle.currentStepKey) ? nextArticle.currentStepKey : visibleSteps[0].key;
@@ -668,6 +683,7 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
     setGscKeywordState(emptyGscKeywordState(nextProject));
     setTopicKeywordSelection(emptySelection);
     setEditReason('');
+    setActiveView('project');
   }
 
   function appendProjectPreferenceMemory(projectId, entry) {
@@ -1738,12 +1754,42 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
   }
 
   return (
-    <div className="seo-workspace">
+    <div className={`seo-workspace${isDarkMode ? ' seo-workspace--dark' : ''}`}>
       <header className="seo-workspace-hero">
+        <div className="seo-topbar">
+          <div className="seo-topbar-actions">
+            <Button
+              type="button"
+              variant={settingsOpen ? 'default' : 'outline'}
+              aria-expanded={settingsOpen}
+              className="seo-toolbar-button"
+              onClick={() => setSettingsOpen((current) => !current)}
+            >
+              <Settings data-icon="inline-start" />
+              设置
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label={isDarkMode ? '切换浅色模式' : '切换深色模式'}
+              title={isDarkMode ? '切换浅色模式' : '切换深色模式'}
+              className="seo-theme-toggle"
+              onClick={() => setIsDarkMode((current) => !current)}
+            >
+              {isDarkMode ? <Sun /> : <Moon />}
+            </Button>
+          </div>
+          <Badge variant="outline">{activeView === 'home' ? '一级首页' : '项目二级页'}</Badge>
+        </div>
         <div className="seo-hero-copy">
-          <Badge variant="outline">Storybook UI Prototype</Badge>
-          <h1>SEO 文章写作工作台</h1>
-          <p>项目 → 现阶段 → 具体步骤创作区。所有确认和修改都保留记录，不覆盖旧版本。</p>
+          <Badge variant="outline">{activeView === 'home' ? '公司项目区' : selectedProject.name}</Badge>
+          <h1>{activeView === 'home' ? '公司项目区' : `${selectedProject.name} 工作台`}</h1>
+          <p>
+            {activeView === 'home'
+              ? '首页只负责选择公司项目区。打开某个公司后进入二级页面，再处理文章流程和步骤创作。'
+              : `${selectedProject.siteUrl} · 当前文章：${articleState.title}`}
+          </p>
         </div>
         <div className="seo-hero-metrics">
           <Card className="seo-metric-card" size="sm">
@@ -1775,24 +1821,64 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
             </CardContent>
           </Card>
         </div>
-        <div className="seo-status-legend">
+        {activeView === 'project' ? (
+          <div className="seo-status-legend">
           <Badge variant="outline"><i className="seo-dot seo-dot--done" />完成</Badge>
           <Badge variant="outline"><i className="seo-dot seo-dot--current" />当前</Badge>
           <Badge variant="outline"><i className="seo-dot seo-dot--todo" />待开始</Badge>
-        </div>
+          </div>
+        ) : null}
       </header>
 
-      <ApiSettingsPanel
-        settings={apiSettings}
-        status={apiStatus}
-        onChange={updateApiSettings}
-        onSave={saveApiSettings}
-        onTestGenerate={testGenerate}
-      />
+      {settingsOpen ? (
+        <div className="seo-settings-window-backdrop" role="dialog" aria-modal="true" aria-label="API 设置窗口">
+          <div className="seo-settings-window">
+            <div className="seo-settings-window-head">
+              <div>
+                <span>二级窗口</span>
+                <h2>系统设置</h2>
+                <p>配置后端地址、模型 provider 和 API 接入信息。</p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="关闭设置窗口"
+                title="关闭设置窗口"
+                onClick={() => setSettingsOpen(false)}
+              >
+                <X />
+              </Button>
+            </div>
+            <ApiSettingsPanel
+              settings={apiSettings}
+              status={apiStatus}
+              onChange={updateApiSettings}
+              onSave={saveApiSettings}
+              onTestGenerate={testGenerate}
+            />
+          </div>
+        </div>
+      ) : null}
 
-      <div className="seo-home-grid">
-        <ProjectList projects={workspace.projects} selectedProjectId={selectedProjectId} onSelectProject={selectProject} />
-        <div className="seo-stage-stack">
+      {activeView === 'home' ? (
+        <main className="seo-home-page">
+          <ProjectList projects={workspace.projects} selectedProjectId={selectedProjectId} onSelectProject={selectProject} />
+        </main>
+      ) : (
+        <main className="seo-project-page">
+          <div className="seo-project-toolbar">
+            <Button type="button" variant="outline" onClick={() => setActiveView('home')}>
+              <ArrowLeft data-icon="inline-start" />
+              返回首页
+            </Button>
+          <div className="seo-current-workspace">
+            <span>当前打开</span>
+            <strong>{selectedProject.name}</strong>
+            <small>{selectedProject.siteUrl}</small>
+          </div>
+          </div>
+          <div className="seo-stage-stack">
           <ArticleFlow article={articleState} steps={visibleSteps} onStepSelect={selectStep} />
           <StepEditor
             project={selectedProject}
@@ -1854,9 +1940,8 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
             onModify={markModify}
           />
         </div>
-      </div>
 
-      <section className="seo-panel">
+          <section className="seo-panel">
         <h2>单篇文章流程</h2>
         <div className="seo-step-list">
           {visibleSteps.map((step) => (
@@ -1873,9 +1958,11 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
             />
           ))}
         </div>
-      </section>
+          </section>
 
-      <RevisionPanel revisions={articleState.revisions.filter((revision) => revision.stepKey === selectedStepKey)} />
+          <RevisionPanel revisions={articleState.revisions.filter((revision) => revision.stepKey === selectedStepKey)} />
+        </main>
+      )}
     </div>
   );
 }

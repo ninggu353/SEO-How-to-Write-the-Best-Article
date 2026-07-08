@@ -22,6 +22,31 @@
   font: inherit;
 }
 
+.seo-topbar {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.seo-topbar-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.seo-toolbar-button,
+.seo-theme-toggle {
+  flex: 0 0 auto;
+}
+
 .seo-workspace-hero {
   display: grid;
   grid-template-columns: minmax(320px, 1.05fr) minmax(430px, 0.95fr) auto;
@@ -142,11 +167,26 @@
 
 .seo-home-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 18px;
   align-items: start;
   max-width: 1420px;
   margin: 0 auto 18px;
+}
+
+.seo-home-page,
+.seo-project-page {
+  display: grid;
+  gap: 18px;
+  max-width: 1420px;
+  margin: 0 auto 18px;
+}
+
+.seo-home-page .seo-panel,
+.seo-project-page .seo-panel,
+.seo-project-page .seo-editor-shell {
+  max-width: none;
+  margin: 0;
 }
 
 .seo-panel,
@@ -161,6 +201,70 @@
   max-width: 1420px;
   margin: 0 auto 18px;
   padding: 22px;
+}
+
+.seo-settings-dock {
+  max-width: 1420px;
+  margin: 0 auto 18px;
+}
+
+.seo-settings-dock .seo-api-panel {
+  margin: 0;
+}
+
+.seo-settings-window-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  align-items: start;
+  justify-items: center;
+  padding: 54px 24px 24px;
+  overflow: auto;
+  background: rgba(15, 23, 42, 0.46);
+  backdrop-filter: blur(8px);
+}
+
+.seo-settings-window {
+  display: grid;
+  gap: 16px;
+  width: min(980px, 100%);
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+}
+
+.seo-settings-window-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px 0;
+}
+
+.seo-settings-window-head div {
+  display: grid;
+  gap: 5px;
+}
+
+.seo-settings-window-head span {
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.seo-settings-window-head p {
+  color: #6b7280;
+}
+
+.seo-settings-window .seo-api-panel {
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .seo-api-title {
@@ -279,10 +383,17 @@
   gap: 12px;
 }
 
-.seo-project-button {
+.seo-workspace-folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+}
+
+.seo-project-button,
+.seo-workspace-folder {
   display: grid;
   width: 100%;
-  gap: 6px;
+  gap: 12px;
   padding: 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -291,22 +402,74 @@
   text-align: left;
   cursor: pointer;
   justify-items: start;
+  white-space: normal;
 }
 
 .seo-project-button:hover,
-.seo-project-button.is-selected {
+.seo-project-button.is-selected,
+.seo-workspace-folder:hover,
+.seo-workspace-folder.is-selected {
   border-color: #0f766e;
   background: #f0fdfa;
+}
+
+.seo-folder-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.seo-folder-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: #ecfeff;
+  color: #0f766e;
+}
+
+.seo-folder-icon svg,
+.seo-folder-meta svg,
+.seo-project-stats svg {
+  width: 16px;
+  height: 16px;
+}
+
+.seo-folder-title-block {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
 }
 
 .seo-project-name {
   font-size: 18px;
   font-weight: 800;
+  line-height: 1.25;
 }
 
 .seo-project-site {
   color: #6b7280;
   font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.seo-folder-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.seo-folder-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .seo-project-stats {
@@ -317,9 +480,63 @@
   font-size: 13px;
 }
 
+.seo-project-stats [data-slot="badge"] {
+  gap: 5px;
+}
+
+.seo-folder-open-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #99f6e4;
+  border-radius: 8px;
+  background: #ccfbf1;
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .seo-stage-stack {
   display: grid;
   gap: 18px;
+}
+
+.seo-project-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.seo-current-workspace {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #d1fae5;
+  border-radius: 8px;
+  background: #ecfdf5;
+}
+
+.seo-current-workspace span {
+  color: #047857;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.seo-current-workspace strong {
+  min-width: 0;
+  color: #064e3b;
+  overflow-wrap: anywhere;
+}
+
+.seo-current-workspace small {
+  color: #0f766e;
+  overflow-wrap: anywhere;
 }
 
 .seo-flow-strip {
@@ -2204,6 +2421,158 @@
   color: #1f2937;
 }
 
+.seo-workspace--dark {
+  background:
+    linear-gradient(180deg, rgba(18, 22, 28, 0.92), rgba(10, 12, 16, 0.98) 260px),
+    #0a0c10;
+  color: #f3f4f6;
+}
+
+.seo-workspace--dark .seo-topbar,
+.seo-workspace--dark .seo-status-legend,
+.seo-workspace--dark .seo-panel,
+.seo-workspace--dark .seo-editor-shell,
+.seo-workspace--dark .seo-settings-window,
+.seo-workspace--dark .seo-metric-card,
+.seo-workspace--dark .seo-workspace-folder,
+.seo-workspace--dark .seo-project-button,
+.seo-workspace--dark .seo-flow-chip,
+.seo-workspace--dark .seo-api-grid input,
+.seo-workspace--dark .seo-api-work textarea,
+.seo-workspace--dark .seo-manual-fields textarea,
+.seo-workspace--dark .seo-product-link-row input,
+.seo-workspace--dark .seo-product-candidate-reader input,
+.seo-workspace--dark .seo-feedback-card,
+.seo-workspace--dark .seo-feedback-stat-list span,
+.seo-workspace--dark .seo-feedback-change-list article,
+.seo-workspace--dark .seo-feedback-accepted-list article,
+.seo-workspace--dark .seo-feedback-selected blockquote,
+.seo-workspace--dark .seo-feedback-api-result pre {
+  border-color: #2f3744;
+  background: #171b22;
+  color: #f3f4f6;
+  box-shadow: none;
+}
+
+.seo-workspace--dark .seo-workspace-hero p,
+.seo-workspace--dark .seo-muted,
+.seo-workspace--dark .seo-project-site,
+.seo-workspace--dark .seo-project-stats,
+.seo-workspace--dark .seo-folder-meta,
+.seo-workspace--dark .seo-api-grid label,
+.seo-workspace--dark .seo-api-work label,
+.seo-workspace--dark .seo-manual-fields label,
+.seo-workspace--dark .seo-topic-status,
+.seo-workspace--dark .seo-small-note,
+.seo-workspace--dark .seo-feedback-change-list span,
+.seo-workspace--dark .seo-feedback-accepted-list span,
+.seo-workspace--dark .seo-feedback-stat-list span {
+  color: #a8b3c2;
+}
+
+.seo-workspace--dark .seo-settings-window-head p {
+  color: #a8b3c2;
+}
+
+.seo-workspace--dark .seo-metric-card strong,
+.seo-workspace--dark .seo-project-name,
+.seo-workspace--dark .seo-dedup-check strong,
+.seo-workspace--dark .seo-feedback-change-list strong,
+.seo-workspace--dark .seo-feedback-accepted-list p {
+  color: #f8fafc;
+}
+
+.seo-workspace--dark .seo-folder-icon {
+  background: #0f2f2d;
+  color: #5eead4;
+}
+
+.seo-workspace--dark .seo-folder-open-label {
+  border-color: #134e4a;
+  background: #0f2f2d;
+  color: #99f6e4;
+}
+
+.seo-workspace--dark .seo-settings-window .seo-api-panel {
+  border-top-color: #2f3744;
+}
+
+.seo-workspace--dark .seo-current-workspace {
+  border-color: #14532d;
+  background: #10231a;
+}
+
+.seo-workspace--dark .seo-current-workspace span,
+.seo-workspace--dark .seo-current-workspace small {
+  color: #86efac;
+}
+
+.seo-workspace--dark .seo-current-workspace strong {
+  color: #dcfce7;
+}
+
+.seo-workspace--dark .seo-project-button:hover,
+.seo-workspace--dark .seo-project-button.is-selected,
+.seo-workspace--dark .seo-workspace-folder:hover,
+.seo-workspace--dark .seo-workspace-folder.is-selected {
+  border-color: #2dd4bf;
+  background: #12302f;
+}
+
+.seo-workspace--dark .seo-flow-chip:hover {
+  border-color: #60a5fa;
+  color: #bfdbfe;
+}
+
+.seo-workspace--dark .seo-api-grid input,
+.seo-workspace--dark .seo-api-work textarea,
+.seo-workspace--dark .seo-manual-fields textarea,
+.seo-workspace--dark .seo-product-link-row input,
+.seo-workspace--dark .seo-product-candidate-reader input,
+.seo-workspace--dark .seo-product-reject-box textarea {
+  background: #0d1117;
+  color: #f8fafc;
+}
+
+.seo-workspace--dark .seo-api-work,
+.seo-workspace--dark .seo-product-panel--manual,
+.seo-workspace--dark .seo-product-retry,
+.seo-workspace--dark .seo-feedback-mark-buttons button.is-active {
+  border-color: #9a5d1c;
+  background: #20170f;
+}
+
+.seo-workspace--dark .seo-manual-work,
+.seo-workspace--dark .seo-product-panel--result,
+.seo-workspace--dark .seo-topic-keyword-card--ready {
+  border-color: #166534;
+  background: #102015;
+}
+
+.seo-workspace--dark .seo-topic-keyword-card,
+.seo-workspace--dark .seo-product-memory,
+.seo-workspace--dark .seo-feedback-change-list article.is-active,
+.seo-workspace--dark .seo-feedback-selected blockquote {
+  border-color: #1d4ed8;
+  background: #111c33;
+}
+
+.seo-workspace--dark .seo-topic-keyword-card--empty,
+.seo-workspace--dark .seo-dedup-panel,
+.seo-workspace--dark .seo-dedup-risk,
+.seo-workspace--dark .seo-dedup-check--waiting {
+  border-color: #854d0e;
+  background: #211a0f;
+}
+
+.seo-workspace--dark .seo-topic-keyword-card--error,
+.seo-workspace--dark .seo-keyword-candidate--ignored,
+.seo-workspace--dark .seo-product-url-pick--rejected,
+.seo-workspace--dark .seo-product-reject-box {
+  border-color: #7f1d1d;
+  background: #241313;
+}
+
 @media (max-width: 980px) {
   .seo-workspace {
     padding: 22px;
@@ -2231,6 +2600,21 @@
 
   .seo-api-grid {
     grid-template-columns: 1fr;
+  }
+
+  .seo-topbar,
+  .seo-current-workspace,
+  .seo-project-toolbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .seo-settings-window-backdrop {
+    padding: 16px;
+  }
+
+  .seo-settings-window-head {
+    display: grid;
   }
 
   .seo-workspace-hero {

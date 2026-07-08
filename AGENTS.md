@@ -4,9 +4,9 @@
 
 ## Project Boundary
 
-本仓库是 SEO 文章写作工作台的独立 Storybook 前端原型，只允许提交：
+本仓库是 SEO 文章写作工作台的独立 Vite + React 前端工作台，只允许提交：
 
-- Storybook UI 代码
+- Vite 前端 UI 代码
 - React 组件和样式
 - 脱敏 mock 数据
 - 启动和构建配置
@@ -18,7 +18,7 @@
 - 真实客户 Word、Excel、CSV、GSC 导出
 - 真实文章草稿、终稿、客户素材
 - 本地数据库、缓存、日志、运行时输出
-- `node_modules`、`dist`、`storybook-static`
+- `node_modules`、`dist`
 
 如果不确定某个文件是否可提交，默认不要提交，并在回复中说明风险。
 
@@ -65,7 +65,6 @@ git checkout -b ai/<owner>/<task-slug>
 运营内容类任务优先修改：
 
 - `src/seo-workspace/sampleWorkspaceData.js`
-- `src/seo-workspace/SeoArticleWorkspace.stories.js`
 - 文案、标签、mock 状态和演示数据
 
 产品 UI 或交互类任务可以修改：
@@ -80,7 +79,7 @@ git checkout -b ai/<owner>/<task-slug>
 
 - `package.json`
 - `vite.config.js`
-- Storybook 相关配置
+- Vite 相关配置
 
 涉及真实客户资料、生产 API、鉴权、数据库或后端接口时，先停止并向人类确认。
 
@@ -131,12 +130,6 @@ git commit -m "docs: add ai collaboration workflow"
 ```bash
 npm run lint
 npm run build
-```
-
-如果改了 Storybook stories、组件展示或视觉状态，也执行：
-
-```bash
-npm run build-storybook
 ```
 
 如果命令失败：
