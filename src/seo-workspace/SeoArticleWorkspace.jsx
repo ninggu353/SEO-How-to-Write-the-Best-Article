@@ -1,11 +1,17 @@
 import React from 'react';
+import { CheckCircle2, Clock3, FileText, Layers3 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
 import { ApiSettingsPanel } from './components/ApiSettingsPanel';
 import { ArticleFlow } from './components/ArticleFlow';
 import { ProjectList } from './components/ProjectList';
 import { RevisionPanel } from './components/RevisionPanel';
 import { StepCard } from './components/StepCard';
 import { StepEditor } from './components/StepEditor';
-import { sampleWorkspace } from './data/sampleWorkspaceData';
+import { sampleWorkspace } from './sampleWorkspaceData';
 import './seo-workspace.css';
 
 function firstArticleForProject(workspace, projectId) {
@@ -598,6 +604,17 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
   const selectedProject = workspace.projects.find((project) => project.id === selectedProjectId);
   const selectedStep = visibleSteps.find((step) => step.key === selectedStepKey) || visibleSteps[0];
   const selectedProjectPreferenceMemory = projectPreferenceMemoryById[selectedProjectId] || [];
+  const workspaceStats = React.useMemo(() => (
+    (workspace.projects || []).reduce(
+      (totals, project) => ({
+        projects: totals.projects + 1,
+        articles: totals.articles + project.articleTotal,
+        inProgress: totals.inProgress + project.inProgressCount,
+        completed: totals.completed + project.completedCount,
+      }),
+      { projects: 0, articles: 0, inProgress: 0, completed: 0 },
+    )
+  ), [workspace.projects]);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -1723,14 +1740,45 @@ export function SeoArticleWorkspace({ initialProjectId = 'demo_project_a', works
   return (
     <div className="seo-workspace">
       <header className="seo-workspace-hero">
-        <div>
-          <h1>SEO文章写作工作台进度总览</h1>
+        <div className="seo-hero-copy">
+          <Badge variant="outline">Storybook UI Prototype</Badge>
+          <h1>SEO 文章写作工作台</h1>
           <p>项目 → 现阶段 → 具体步骤创作区。所有确认和修改都保留记录，不覆盖旧版本。</p>
         </div>
+        <div className="seo-hero-metrics">
+          <Card className="seo-metric-card" size="sm">
+            <CardContent>
+              <Layers3 className="seo-metric-icon" />
+              <span>项目</span>
+              <strong>{workspaceStats.projects}</strong>
+            </CardContent>
+          </Card>
+          <Card className="seo-metric-card" size="sm">
+            <CardContent>
+              <FileText className="seo-metric-icon" />
+              <span>文章</span>
+              <strong>{workspaceStats.articles}</strong>
+            </CardContent>
+          </Card>
+          <Card className="seo-metric-card" size="sm">
+            <CardContent>
+              <Clock3 className="seo-metric-icon" />
+              <span>进行中</span>
+              <strong>{workspaceStats.inProgress}</strong>
+            </CardContent>
+          </Card>
+          <Card className="seo-metric-card" size="sm">
+            <CardContent>
+              <CheckCircle2 className="seo-metric-icon" />
+              <span>完成</span>
+              <strong>{workspaceStats.completed}</strong>
+            </CardContent>
+          </Card>
+        </div>
         <div className="seo-status-legend">
-          <span><i className="seo-dot seo-dot--done" />完成</span>
-          <span><i className="seo-dot seo-dot--current" />当前</span>
-          <span><i className="seo-dot seo-dot--todo" />待开始</span>
+          <Badge variant="outline"><i className="seo-dot seo-dot--done" />完成</Badge>
+          <Badge variant="outline"><i className="seo-dot seo-dot--current" />当前</Badge>
+          <Badge variant="outline"><i className="seo-dot seo-dot--todo" />待开始</Badge>
         </div>
       </header>
 

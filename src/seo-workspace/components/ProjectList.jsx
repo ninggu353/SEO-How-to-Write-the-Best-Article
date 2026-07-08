@@ -1,28 +1,46 @@
 import React from 'react';
+import { FolderKanban } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export function ProjectList({ projects, selectedProjectId, onSelectProject }) {
   return (
-    <section className="seo-panel seo-project-panel">
-      <h2>项目</h2>
-      <div className="seo-project-list">
+    <Card className="seo-panel seo-project-panel" size="sm">
+      <CardHeader className="seo-section-head">
+        <CardTitle>
+          <FolderKanban />
+          项目
+        </CardTitle>
+        <Badge variant="secondary">{projects.length} 个项目</Badge>
+      </CardHeader>
+      <CardContent>
+        <div className="seo-project-list">
         {projects.map((project) => (
-          <button
+          <Button
             key={project.id}
             type="button"
-            className={`seo-project-button ${project.id === selectedProjectId ? 'is-selected' : ''}`}
+            variant="ghost"
+            className={`seo-project-button h-auto ${project.id === selectedProjectId ? 'is-selected' : ''}`}
             onClick={() => onSelectProject(project.id)}
           >
             <span className="seo-project-name">{project.name}</span>
             <span className="seo-project-site">{project.siteUrl}</span>
             <span className="seo-project-stats">
-              本周文章 {project.articleTotal}
-              <span>进行中 {project.inProgressCount}</span>
-              <span>完成 {project.completedCount}</span>
-              <span>需修改 {project.needsRevisionCount}</span>
+              <Badge variant="outline">本周 {project.articleTotal}</Badge>
+              <Badge variant="outline">进行中 {project.inProgressCount}</Badge>
+              <Badge variant="outline">完成 {project.completedCount}</Badge>
+              <Badge variant={project.needsRevisionCount ? 'secondary' : 'outline'}>需修改 {project.needsRevisionCount}</Badge>
             </span>
-          </button>
+          </Button>
         ))}
-      </div>
-    </section>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

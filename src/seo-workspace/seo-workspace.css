@@ -1,10 +1,12 @@
 .seo-workspace {
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 42px;
-  background: #f6f7fb;
+  padding: 32px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 247, 246, 0.94) 240px),
+    #f5f7f6;
   color: #1f2937;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Geist Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .seo-workspace *,
@@ -21,12 +23,19 @@
 }
 
 .seo-workspace-hero {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: minmax(320px, 1.05fr) minmax(430px, 0.95fr) auto;
+  align-items: stretch;
+  gap: 16px;
+  margin: 0 auto 18px;
   max-width: 1420px;
+}
+
+.seo-hero-copy {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+  min-width: 0;
 }
 
 .seo-workspace h1,
@@ -37,7 +46,7 @@
 }
 
 .seo-workspace h1 {
-  font-size: 28px;
+  font-size: 34px;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -53,22 +62,58 @@
 }
 
 .seo-workspace-hero p {
-  margin-top: 10px;
   font-size: 15px;
 }
 
+.seo-hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(88px, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.seo-metric-card {
+  min-width: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.seo-metric-card [data-slot="card-content"] {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+}
+
+.seo-metric-card span {
+  color: #667085;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.seo-metric-card strong {
+  color: #101828;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.seo-metric-icon {
+  width: 18px;
+  height: 18px;
+  color: #0f766e;
+}
+
 .seo-status-legend {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 14px;
+  display: grid;
+  gap: 8px;
+  align-content: center;
+  padding: 12px;
   border: 1px solid #e5e7eb;
-  border-radius: 999px;
-  background: #fff;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
   white-space: nowrap;
 }
 
-.seo-status-legend span {
+.seo-status-legend [data-slot="badge"] {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -107,9 +152,9 @@
 .seo-panel,
 .seo-editor-shell {
   border: 1px solid #e5e7eb;
-  border-radius: 18px;
+  border-radius: 8px;
   background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
 
 .seo-api-panel {
@@ -123,11 +168,27 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 18px;
 }
 
-.seo-api-title h2 {
-  margin-bottom: 8px;
+.seo-api-heading,
+.seo-section-head [data-slot="card-title"],
+.seo-stage-header [data-slot="card-title"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seo-api-heading svg,
+.seo-section-head [data-slot="card-title"] svg,
+.seo-stage-header [data-slot="card-title"] svg {
+  width: 17px;
+  height: 17px;
+  color: #0f766e;
+}
+
+.seo-api-body {
+  display: grid;
+  gap: 16px;
 }
 
 .seo-api-status {
@@ -180,10 +241,10 @@
 
 .seo-api-grid input {
   width: 100%;
-  min-height: 44px;
+  min-height: 38px;
   padding: 0 12px;
   border: 1px solid #d1d5db;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
   color: #111827;
 }
@@ -201,8 +262,14 @@
   padding: 22px;
 }
 
-.seo-project-panel h2,
-.seo-flow-panel h2,
+.seo-section-head,
+.seo-stage-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .seo-panel > h2 {
   margin-bottom: 16px;
 }
@@ -218,17 +285,18 @@
   gap: 6px;
   padding: 16px;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #fff;
   color: #1f2937;
   text-align: left;
   cursor: pointer;
+  justify-items: start;
 }
 
 .seo-project-button:hover,
 .seo-project-button.is-selected {
-  border-color: #2563eb;
-  background: #eff6ff;
+  border-color: #0f766e;
+  background: #f0fdfa;
 }
 
 .seo-project-name {
@@ -254,14 +322,6 @@
   gap: 18px;
 }
 
-.seo-stage-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 16px;
-}
-
 .seo-flow-strip {
   display: flex;
   flex-wrap: wrap;
@@ -272,10 +332,10 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  min-height: 38px;
-  padding: 8px 12px;
+  min-height: 34px;
+  padding: 7px 10px;
   border: 1px solid #d1d5db;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: #111827;
   cursor: pointer;
@@ -287,7 +347,7 @@
 }
 
 .seo-editor-shell {
-  padding: 26px;
+  padding: 22px;
 }
 
 .seo-editor-title {
@@ -1455,17 +1515,17 @@
 }
 
 .seo-link-button,
-.seo-workspace button,
+.seo-workspace button:not([data-slot="button"]),
 .seo-primary {
   border: 1px solid #d1d5db;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: #1f2937;
   cursor: pointer;
   font-weight: 700;
 }
 
-.seo-workspace button {
+.seo-workspace button:not([data-slot="button"]) {
   padding: 10px 15px;
 }
 
@@ -1497,8 +1557,8 @@
   gap: 12px;
   min-height: 430px;
   padding: 24px;
-  border: 3px solid #1d7bd8;
-  border-radius: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   background: #fff;
 }
 
@@ -1508,7 +1568,7 @@
 .seo-reason-panel select {
   width: 100%;
   border: 1px solid #d1d5db;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
   color: #111827;
 }
@@ -2147,6 +2207,7 @@
 @media (max-width: 980px) {
   .seo-workspace {
     padding: 22px;
+    overflow-x: hidden;
   }
 
   .seo-workspace-hero,
@@ -2174,6 +2235,30 @@
 
   .seo-workspace-hero {
     display: grid;
+  }
+
+  .seo-hero-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seo-api-title,
+  .seo-section-head,
+  .seo-stage-header,
+  .seo-topic-card-head,
+  .seo-gsc-sync-actions {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .seo-gsc-sync-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seo-gsc-sync-actions > *,
+  .seo-topic-head-actions,
+  .seo-topic-head-actions > *,
+  .seo-api-actions > * {
+    width: 100%;
   }
 
   .seo-editor-grid {

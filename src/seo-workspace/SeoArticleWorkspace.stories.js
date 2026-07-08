@@ -2,7 +2,7 @@ import React from 'react';
 
 import { SeoArticleWorkspace } from './SeoArticleWorkspace';
 import { ClientFeedbackWorkbench } from './components/ClientFeedbackWorkbench';
-import { sampleWorkspace } from './data/sampleWorkspaceData';
+import { sampleWorkspace } from './sampleWorkspaceData';
 
 export default {
   title: 'SEO/Article Workspace',
